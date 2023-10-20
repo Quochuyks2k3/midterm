@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-left">
+        <a href="home.html">
+            <img src="Logo_vju.jpg" alt="Profile Image" class="navbar-image">
+        </a>
+        <h1 class="navbar-title">Quản lý danh sách lớp</h1>
+    </div>
+
+    <div class="navbar-right">
+        <a href="input.html" class="navbar-button">Nhập danh sách</a>
+        <a href="output.html" class="navbar-button">Nhập danh sách</a>
+    </div>
+</div>
+
+<form class="container">
+    <h1>Danh sách thông tin</h1>
+</form>
+
+<form class="container1" method="post" action="output.html">
+    
+    <table border ="1">
+        <thead>
+            <tr>
+                <th>Họ và Tên</th>
+                <th>Giới tính</th>
+                <th>Ngày sinh</th>
+                <th>Khác</th>
+            </tr>
+        </thead>
+        <tbody id="myTableBody">
+            <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+        </tbody>
+    </table>
+</form>
+
+<script>
+    // Lấy danh sách từ Local Storage
+    var danhSach = JSON.parse(localStorage.getItem("danhSach")) || [];
+
+    // Hiển thị dữ liệu trên trang output.html
+    var myTableBody = document.getElementById("myTableBody");
+
+    danhSach.forEach(function (item, index) {
+        var row = document.createElement("tr");
+        var hoTenCell = document.createElement("td");
+        var gioiTinhCell = document.createElement("td");
+        var ngaySinhCell = document.createElement("td");
+        var khacCell = document.createElement("td");
+
+        hoTenCell.innerText = item.ho + " " + item.ten;
+
+        // Hiển thị giới tính dựa trên giá trị lưu trữ
+        if (item.gioiTinh === "Nam") {
+            gioiTinhCell.innerText = "Nam";
+        } else if (item.gioiTinh === "Nu") {
+            gioiTinhCell.innerText = "Nữ";
+        } else {
+            gioiTinhCell.innerText = "Khác";
+        }
+
+        ngaySinhCell.innerText = item.ngaySinh;
+
+        // Thêm nút xóa và sửa
+        var deleteButton = document.createElement("button");
+        deleteButton.innerText = "Xóa";
+        deleteButton.addEventListener("click", function () {
+            deleteItem(index);
+        });
+
+        var editButton = document.createElement("button");
+        editButton.innerText = "Sửa";
+        editButton.addEventListener("click", function () {
+            editItem(index);
+        });
+
+        khacCell.appendChild(deleteButton);
+        khacCell.appendChild(editButton);
+
+        row.appendChild(hoTenCell);
+        row.appendChild(gioiTinhCell);
+        row.appendChild(ngaySinhCell);
+        row.appendChild(khacCell);
+
+        myTableBody.appendChild(row);
+    });
+
+    function deleteItem(index) {
+        danhSach.splice(index, 1);
+        localStorage.setItem("danhSach", JSON.stringify(danhSach));
+        renderTable();
+    }
+
+    function editItem(index) {
+        // Implement logic để điền thông tin vào form chỉnh sửa nếu cần
+        // Ví dụ: Lưu thông tin vào localStorage và chuyển hướng đến trang chỉnh sửa
+        localStorage.setItem("editingIndex", index);
+        window.location.href = "edit.html";
+    }
+
+    function renderTable() {
+        myTableBody.innerHTML = "";
+        danhSach.forEach(function (item, index) {
+            var row = document.createElement("tr");
+            var hoTenCell = document.createElement("td");
+            var gioiTinhCell = document.createElement("td");
+            var ngaySinhCell = document.createElement("td");
+            var khacCell = document.createElement("td");
+
+            hoTenCell.innerText = item.ho + " " + item.ten;
+
+            // Hiển thị giới tính dựa trên giá trị lưu trữ
+            if (item.gioiTinh === "Nam") {
+                gioiTinhCell.innerText = "Nam";
+            } else if (item.gioiTinh === "Nu") {
+                gioiTinhCell.innerText = "Nữ";
+            } else {
+                gioiTinhCell.innerText = "Khác";
+            }
+
+            ngaySinhCell.innerText = item.ngaySinh;
+
+            // Thêm nút xóa và sửa
+            var deleteButton = document.createElement("button");
+            deleteButton.innerText = "Xóa";
+            deleteButton.addEventListener("click", function () {
+                deleteItem(index);
+            });
+
+            var editButton = document.createElement("button");
+            editButton.innerText = "Sửa";
+            editButton.addEventListener("click", function () {
+                editItem(index);
+            });
+
+            khacCell.appendChild(deleteButton);
+            khacCell.appendChild(editButton);
+
+            row.appendChild(hoTenCell);
+            row.appendChild(gioiTinhCell);
+            row.appendChild(ngaySinhCell);
+            row.appendChild(khacCell);
+
+            myTableBody.appendChild(row);
+        });
+    }
+</script>
+
+</body>
+</html>

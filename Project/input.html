@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-left">
+        <a href="home.html">
+            <img src="Logo_vju.jpg" alt="Profile Image" class="navbar-image">
+        </a>
+        <h1 class="navbar-title">Quản lý danh sách lớp</h1>
+    </div>
+
+    <div class="navbar-right">
+        <a href="input.html" class="navbar-button">Nhập danh sách</a>
+        <a href="output.html" class="navbar-button">Hiển thị danh sách</a>
+    </div>
+</div>
+
+<form class="container">
+    <h1>Nhập thông tin</h1>
+</form>
+
+<form class="container1" method="post" id="myForm">
+    <div class="mb-3">
+        <label class="form-label">Họ: </label>
+        <input name="ho" class="form-control">
+        <label class="form-label">Tên: </label>
+        <input name="ten" class="form-control">
+    </div>
+    <div>
+        <label class="form-label">Giới tính</label>
+        <input type="radio" name="gioiTinh" value="Nam" class="btn-check" id="option1" autocomplete="off" checked>
+        <label class="btn btn-primary" for="option1">Nam</label>
+
+        <input type="radio" name="gioiTinh" value="Nu" class="btn-check" id="option2" autocomplete="off">
+        <label class="btn btn-primary" for="option2">Nữ</label>
+
+        <input type="radio" name="gioiTinh" value="Khac" class="btn-check" id="option3" autocomplete="off">
+        <label class="btn btn-primary" for="option3">Khác</label>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Ngày sinh</label>
+        <input type="date" name="ngaySinh" class="form-control">
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn chặn form tự động submit
+
+        // Lấy giá trị từ các trường input
+        var hoValue = document.getElementsByName("ho")[0].value;
+        var tenValue = document.getElementsByName("ten")[0].value;
+        var gioitinhValue = document.querySelector('input[name="gioiTinh"]:checked').value;
+        var ngaysinhValue = document.getElementsByName("ngaySinh")[0].value;
+
+        // Lưu dữ liệu vào localStorage
+        var newItem = { ho: hoValue, ten: tenValue, gioiTinh: gioitinhValue, ngaySinh: ngaysinhValue };
+        var danhSach = JSON.parse(localStorage.getItem("danhSach")) || [];
+        danhSach.push(newItem);
+        localStorage.setItem("danhSach", JSON.stringify(danhSach));
+
+        // Chuyển hướng đến trang output.html
+        window.location.href = "output.html";
+    });
+</script>
+
+</body>
+</html>
